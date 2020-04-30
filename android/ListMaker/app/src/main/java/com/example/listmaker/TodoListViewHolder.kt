@@ -1,4 +1,8 @@
 package com.example.listmaker
 
-class TodoListViewHolder {
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+
+class TodoListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
 }
