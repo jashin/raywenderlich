@@ -85,4 +85,7 @@ lint/tmp/
 # lint/reports/
 
 # mac file
-.DS_Store
+*.DS_Store
+
+# idea
+.idea
