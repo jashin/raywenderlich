@@ -4,8 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class TodoListAdapter(val lists: ArrayList<TaskList>) : RecyclerView.Adapter<TodoListViewHolder>() {
+class TodoListAdapter(private val lists: ArrayList<TaskList>, val clickListener: TodoListClickListener) : RecyclerView.Adapter<TodoListViewHolder>() {
 
+    interface TodoListClickListener {
+        fun listItemClicked(list: TaskList)
+    }
 //    ddprivate var todoList = mutableListOf("Android Development", "House Work", "Errands", "Shopping")
 //
 //    fun addNewItem(listName: String) {
@@ -31,6 +34,9 @@ class TodoListAdapter(val lists: ArrayList<TaskList>) : RecyclerView.Adapter<Tod
     override fun onBindViewHolder(holder: TodoListViewHolder, position: Int) {
         holder.listPositionTextView.text = (position + 1).toString()
         holder.listTitleTextView.text =  lists[position].name
+        holder.itemView.setOnClickListener {
+            clickListener.listItemClicked(lists[position])
+        }
     }
 
     fun addList(list: TaskList) {

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TodoListAdapter.TodoListClickListener {
 
     private lateinit var todoListRecyclerView: RecyclerView
     private val listDataManager: ListDataManager = ListDataManager(this)
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         val lists = listDataManager.readList()
         todoListRecyclerView = findViewById(R.id.lists_recyclerview)
         todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = TodoListAdapter(lists)
+        todoListRecyclerView.adapter = TodoListAdapter(lists, this)
 
         fab.setOnClickListener { _ ->
             showCreateTodoListDialog()
@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
                 listDataManager.saveList(list)
                 adapter.addList(list)
                 dialog.dismiss()
+                showTaskListItems(list)
         } // the curly braces are for passing a listener
         // and you pass _ because you don't care which button is clicked
 
@@ -80,5 +81,9 @@ class MainActivity : AppCompatActivity() {
         val taskListItem = Intent(this, DetailActivity::class.java)
         taskListItem.putExtra(INTENT_LIST_KEY, list)
         startActivity(taskListItem)
+    }
+
+    override fun listItemClicked(list: TaskList) {
+        showTaskListItems(list)
     }
 }
