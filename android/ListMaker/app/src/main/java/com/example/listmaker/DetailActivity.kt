@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.activity_detail.*
 class DetailActivity : AppCompatActivity() {
 
     lateinit var list: TaskList
-    lateinit var taskListRecyclerView: RecyclerView
+//    lateinit var taskListRecyclerView: RecyclerView
+    lateinit var detailFragment : DetailFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +23,18 @@ class DetailActivity : AppCompatActivity() {
         list = intent.getParcelableExtra(MainActivity.INTENT_LIST_KEY) as TaskList
         title = list.name
 
-        taskListRecyclerView = findViewById(R.id.task_list_recyclerview)
-        taskListRecyclerView.layoutManager = LinearLayoutManager(this)
-        taskListRecyclerView.adapter = TaskListAdapter(list)
+//        taskListRecyclerView = findViewById(R.id.task_list_recyclerview)
+//        taskListRecyclerView.layoutManager = LinearLayoutManager(this)
+//        taskListRecyclerView.adapter = TaskListAdapter(list)
 
         add_task_button.setOnClickListener {
             showCreateDialog()
         }
+
+        detailFragment = DetailFragment.newInstance(list)
+        supportFragmentManager.beginTransaction()
+            .add(R.id.detail_fragment_container, detailFragment)
+            .commit()
     }
 
     override fun onBackPressed() {
@@ -54,8 +60,9 @@ class DetailActivity : AppCompatActivity() {
         myDialog.setPositiveButton(positiveButtonTitle) {
             dialog, _ ->
                 val task = editText.text.toString()
-                val adapter =  taskListRecyclerView.adapter as TaskListAdapter
-                adapter.addNewTask(task)
+//                val adapter =  taskListRecyclerView.adapter as TaskListAdapter
+//                adapter.addNewTask(task)
+                detailFragment.addNewTask(task)
                 dialog.dismiss()
         }
         myDialog.create().show()
