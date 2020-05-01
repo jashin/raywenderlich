@@ -21,4 +21,8 @@ class TaskListAdapter(private val taskList: TaskList) : RecyclerView.Adapter<Tas
         holder.taskNumberTextView.text = (position + 1).toString()
         holder.taskNameTextView.text = taskList.tasks[position]
     }
+
+    fun addNewTask(task: String) {
+        taskList.tasks.add(task)
+    }
 }

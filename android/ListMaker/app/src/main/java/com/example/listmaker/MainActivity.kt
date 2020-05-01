@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.TodoListClickListener 
         myDialog.setPositiveButton(positiveButtonTitle)  {
             dialog, _ ->
                 val adapter = todoListRecyclerView.adapter as TodoListAdapter
-                val list = TaskList(todoTitleEditText.text.toString(), arrayListOf("test", "test2"))
+                val list = TaskList(todoTitleEditText.text.toString())
                 listDataManager.saveList(list)
                 adapter.addList(list)
                 dialog.dismiss()
