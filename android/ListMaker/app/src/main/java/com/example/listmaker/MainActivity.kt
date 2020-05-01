@@ -1,5 +1,6 @@
 package com.example.listmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var todoListRecyclerView: RecyclerView
     private val listDataManager: ListDataManager = ListDataManager(this)
+
+    companion object {
+        const val INTENT_LIST_KEY = "list"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,5 +74,11 @@ class MainActivity : AppCompatActivity() {
         // and you pass _ because you don't care which button is clicked
 
         myDialog.create().show()
+    }
+
+    private fun showTaskListItems(list: TaskList){
+        val taskListItem = Intent(this, DetailActivity::class.java)
+        taskListItem.putExtra(INTENT_LIST_KEY, list)
+        startActivity(taskListItem)
     }
 }
