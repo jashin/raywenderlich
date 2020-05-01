@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <FrameLayout
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container" />
+        class="com.example.listmaker.TodoListFragment"
+        android:id="@+id/todo_list_fragment"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
