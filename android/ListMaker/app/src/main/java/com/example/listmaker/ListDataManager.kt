@@ -1,7 +1,6 @@
 package com.example.listmaker
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.preference.PreferenceManager
 
@@ -13,7 +12,6 @@ class ListDataManager(application: Application) : AndroidViewModel(application) 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context).edit()
         // here sharedPrefs is a editor impl
         sharedPrefs.putStringSet(list.name, list.tasks.toHashSet())
-//        sharedPrefs.putStringSet(list.name, HashSet<String>())
         sharedPrefs.apply()
     }
 
@@ -25,7 +23,6 @@ class ListDataManager(application: Application) : AndroidViewModel(application) 
         for (taskList in contents) {
             val taskItems = ArrayList(taskList.value as HashSet<String>)
             val list = TaskList(taskList.key, taskItems)
-//            val list = TaskList(taskList.key)
             taskLists.add(list)
         }
 
