@@ -1,13 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context="com.raywenderlich.android.octomembers.ui.member.MemberActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.raywenderlich.android.octomembers.ui.member.MemberActivity">
 
-  <TextView
-    android:id="@+id/memberName"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorAccent"
+        android:gravity="center">
 
+        <ImageView
+            android:id="@+id/memberImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_standard"
+            android:layout_weight="3"
+            app:srcCompat="@android:drawable/ic_menu_gallery"></ImageView>
+
+        <TextView
+            android:id="@+id/memberName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:padding="@dimen/padding_standard" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryDark"
+        android:layout_weight="1">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:text="Name:"></TextView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:text="Member Type:"></TextView>
+
+            <TextView
+                android:id="@+id/memberType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"></TextView>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
