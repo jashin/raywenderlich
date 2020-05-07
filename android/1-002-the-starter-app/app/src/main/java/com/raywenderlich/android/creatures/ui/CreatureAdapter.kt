@@ -19,7 +19,7 @@ class CreatureAdapter(private val creatureList : List<Creature>): RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: CreatureListViewHolder, position: Int) {
-        Picasso.get().load(creatureList[position].image).into(holder.listCreatureImage)
+        holder.listCreatureImage.setImageResource(holder.itemView.context.resources.getIdentifier(creatureList[position].uri, null, holder.itemView.context.packageName))
         holder.listFullName.text = creatureList[position].fullName
     }
 }
