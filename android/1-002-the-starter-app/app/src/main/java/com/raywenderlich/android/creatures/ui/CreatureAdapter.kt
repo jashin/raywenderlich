@@ -7,11 +7,17 @@ import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.model.Creature
 import com.squareup.picasso.Picasso
 
-class CreatureAdapter(private val creatureList : List<Creature>): RecyclerView.Adapter<CreatureListViewHolder>() {
+class CreatureAdapter(private var creatureList : MutableList<Creature>): RecyclerView.Adapter<CreatureListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreatureListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_creature, parent, false)
         return CreatureListViewHolder(view)
+    }
+
+    fun updateCreatureList(creatures: List<Creature>) {
+        this.creatureList.clear()
+        this.creatureList.addAll(creatures)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -19,7 +25,6 @@ class CreatureAdapter(private val creatureList : List<Creature>): RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: CreatureListViewHolder, position: Int) {
-        holder.listCreatureImage.setImageResource(holder.itemView.context.resources.getIdentifier(creatureList[position].uri, null, holder.itemView.context.packageName))
-        holder.listFullName.text = creatureList[position].fullName
+        holder.bind(creatureList[position])
     }
 }

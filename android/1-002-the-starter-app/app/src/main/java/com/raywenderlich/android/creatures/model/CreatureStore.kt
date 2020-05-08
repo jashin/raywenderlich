@@ -65,6 +65,8 @@ object CreatureStore {
 
   fun getCreatures() = creatures
 
+  fun getFavoriteCreatures() = creatures.filter { it.isFavorite }
+
   fun getCreatureById(id: Int) = creatures.firstOrNull { it.id == id }
 
   fun getFoodById(id: Int) = foods.firstOrNull { it.id == id }
