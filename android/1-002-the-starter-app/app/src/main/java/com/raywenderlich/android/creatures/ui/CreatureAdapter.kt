@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.model.Creature
-import com.squareup.picasso.Picasso
 
 class CreatureAdapter(private var creatureList : MutableList<Creature>): RecyclerView.Adapter<CreatureListViewHolder>() {
 

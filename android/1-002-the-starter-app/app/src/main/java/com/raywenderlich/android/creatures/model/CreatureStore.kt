@@ -69,6 +69,9 @@ object CreatureStore {
 
   fun getCreatureById(id: Int) = creatures.firstOrNull { it.id == id }
 
+  fun getCreatureFoods(creature: Creature): List<Food> =
+          creature.foods.mapNotNull { getFoodById(it) }
+
   fun getFoodById(id: Int) = foods.firstOrNull { it.id == id }
 
   private fun loadJSONFromAsset(filename: String, context: Context): String? {
