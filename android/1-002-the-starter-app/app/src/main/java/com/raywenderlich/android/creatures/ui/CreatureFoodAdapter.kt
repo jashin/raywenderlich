@@ -25,12 +25,6 @@ class CreatureWithFoodAdapter(private var creatureList : MutableList<Creature>):
         return holder
     }
 
-    fun updateCreatureList(creatures: List<Creature>) {
-        this.creatureList.clear()
-        this.creatureList.addAll(creatures)
-        notifyDataSetChanged()
-    }
-
     override fun getItemCount(): Int {
         return creatureList.size
     }
