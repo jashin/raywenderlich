@@ -43,9 +43,11 @@ import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.app.Constants
 import com.raywenderlich.android.creatures.app.inflate
 import com.raywenderlich.android.creatures.model.Creature
+import com.raywenderlich.android.creatures.model.Favorites
 import kotlinx.android.synthetic.main.list_item_creature_card_jupiter.view.*
+import java.util.*
 
-class CreatureCardAdapter(private val creatures: MutableList<Creature>) : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>() {
+class CreatureCardAdapter(private val creatures: MutableList<Creature>) : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>(), ItemTouchHelperListener {
 
   var scrollDirection = ScrollDirection.DOWN
   var jupiterSpanSize = 2
@@ -59,6 +61,23 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
     }
   }
 
+  override fun onItemMove(recyclerView: RecyclerView, fromPosition: Int, toPosition: Int): Boolean {
+    if (fromPosition < toPosition) {
+      for (i in fromPosition until toPosition) {
+        Collections.swap(creatures, i, i + 1)
+      }
+    } else {
+      for (i in fromPosition downTo toPosition + 1) {
+        Collections.swap(creatures, i, i - 1)
+      }
+    }
+    notifyItemMoved(fromPosition, toPosition)
+    return true
+  }
+
+  override fun onItemDismiss(viewHolder: RecyclerView.ViewHolder, position: Int) {
+
+  }
   override fun onBindViewHolder(holder: CreatureCardAdapter.ViewHolder, position: Int) {
     holder.bind(creatures[position])
   }

@@ -35,6 +35,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.*
 import com.raywenderlich.android.creatures.R
@@ -51,6 +52,7 @@ class AllFragment : Fragment() {
   private lateinit var listMenuItem: MenuItem
   private lateinit var gridMenuItem: MenuItem
   private var gridState = GridState.GRID
+  private lateinit var itemTouchHelper: ItemTouchHelper
 
   companion object {
     fun newInstance(): AllFragment {
@@ -135,6 +137,7 @@ class AllFragment : Fragment() {
         }
       }
     })
+    setupItemTouchHelper()
   }
 
   private fun updateRecyclerView(spanCount: Int, addItemDecoration: RecyclerView.ItemDecoration, removeItemDecoration: RecyclerView.ItemDecoration) {
@@ -146,5 +149,10 @@ class AllFragment : Fragment() {
 
   private enum class GridState {
     LIST, GRID
+  }
+
+  private fun setupItemTouchHelper() {
+    itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter))
+    itemTouchHelper.attachToRecyclerView(creatureRecyclerView)
   }
 }
