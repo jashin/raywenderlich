@@ -37,7 +37,6 @@ class CreatureCardAdapter(private var creatureList: MutableList<Creature>) : Rec
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private lateinit var creature: Creature
-        private val foodAdapter = FoodAdapter(mutableListOf())
 
         init {
             itemView.setOnClickListener(this)
