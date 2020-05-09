@@ -32,6 +32,7 @@ package com.raywenderlich.android.creatures.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -64,13 +65,19 @@ class FavoritesFragment : Fragment() {
     listFavoritesRecyclerView.layoutManager = LinearLayoutManager(context)
 //    listFavoritesRecyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
     listFavoritesRecyclerView.adapter = adapter
+    val heightInPixels = resources.getDimensionPixelSize(R.dimen.list_item_divider_height)
+    listFavoritesRecyclerView.addItemDecoration(DividerItemDecoration(ContextCompat.getColor(context!!, R.color.black), heightInPixels))
   }
 
   override fun onResume() {
     super.onResume()
-    val favorites = CreatureStore.getFavoriteCreatures()
-    favorites?.let {
-      adapter.updateCreatureList(favorites)
+//    val favorites = CreatureStore.getFavoriteCreatures()
+//    favorites?.let {
+//      adapter.updateCreatureList(favorites)
+//    }
+    val composites = CreatureStore.getFavoriteComposites(context!!)
+    composites?.let {
+      adapter.updateCreatures(composites)
     }
   }
 }

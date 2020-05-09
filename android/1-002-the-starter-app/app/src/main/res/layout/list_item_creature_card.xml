@@ -5,7 +5,6 @@
     android:id="@+id/creatureCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/padding_half"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
 
@@ -48,10 +47,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_horizontal"
-                    android:paddingStart="@dimen/padding_half"
-                    android:paddingEnd="@dimen/padding_half"
+                    android:padding="@dimen/padding_half"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white"
+                    android:textSize="@dimen/creature_card_text_size"
                     android:textStyle="bold" />
 
             </LinearLayout>
