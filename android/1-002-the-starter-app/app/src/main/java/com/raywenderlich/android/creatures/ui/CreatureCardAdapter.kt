@@ -3,22 +3,16 @@ package com.raywenderlich.android.creatures.ui
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Color.red
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.model.Creature
-import com.raywenderlich.android.creatures.model.CreatureStore
-import kotlinx.android.synthetic.main.list_item_creature.view.*
 import kotlinx.android.synthetic.main.list_item_creature.view.creatureImage
-import kotlinx.android.synthetic.main.list_item_creature.view.nickName
 import kotlinx.android.synthetic.main.list_item_creature_card.view.*
-import kotlinx.android.synthetic.main.list_item_creature_with_food.view.*
 
 class CreatureCardAdapter(private var creatureList: MutableList<Creature>) : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>() {
 
@@ -45,7 +39,7 @@ class CreatureCardAdapter(private var creatureList: MutableList<Creature>) : Rec
         fun bind(creature: Creature) {
             this.creature = creature
 
-            itemView.nickName.text = creature.nickname
+            itemView.fullName.text = creature.fullName
             val imageResource = itemView.context.resources.getIdentifier(creature.uri, null, itemView.context.packageName)
             itemView.creatureImage.setImageResource(imageResource)
             setBackgroundColors(itemView.context, imageResource)
@@ -61,10 +55,10 @@ class CreatureCardAdapter(private var creatureList: MutableList<Creature>) : Rec
             val image = BitmapFactory.decodeResource(context.resources, imageResource)
             Palette.from(image).generate {
                 val backgroundColor = it.getDominantColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
-                itemView.creatureCard.setBackgroundColor(backgroundColor)
-                itemView.nickNameHolder.setBackgroundColor(backgroundColor)
+                itemView.creatureCardContainer.setBackgroundColor(backgroundColor)
+                itemView.fullNameHolder.setBackgroundColor(backgroundColor)
                 val textColor = if (isColorDark(backgroundColor)) Color.WHITE else Color.BLACK
-                itemView.nickName.setTextColor(textColor)
+                itemView.fullName.setTextColor(textColor)
             }
         }
 

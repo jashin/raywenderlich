@@ -34,6 +34,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.HorizontalScrollView
 import android.widget.Toast
@@ -75,7 +76,9 @@ class CreatureActivity : AppCompatActivity() {
         val listFoodRecyclerView = this.listFoodRecyclerView
         val foodAdapter = FoodAdapter(CreatureStore.getCreatureFoods(creature).toMutableList())
         listFoodRecyclerView.adapter = foodAdapter
-        listFoodRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        listFoodRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(this,3, GridLayoutManager.VERTICAL, false)
+        listFoodRecyclerView.layoutManager = layoutManager
 //        foodAdapter.updateFoods(CreatureStore.getCreatureFoods(creature))
     }
 

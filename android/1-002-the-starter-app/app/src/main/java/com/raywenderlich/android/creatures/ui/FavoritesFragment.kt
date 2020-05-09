@@ -32,6 +32,7 @@ package com.raywenderlich.android.creatures.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -61,6 +62,7 @@ class FavoritesFragment : Fragment() {
 
     val listFavoritesRecyclerView = view.findViewById(R.id.listFavoritesRecyclerView) as RecyclerView
     listFavoritesRecyclerView.layoutManager = LinearLayoutManager(context)
+//    listFavoritesRecyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
     listFavoritesRecyclerView.adapter = adapter
   }
 
