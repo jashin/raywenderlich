@@ -107,20 +107,42 @@
 //    println(students.mapNotNull { it.pet  })
 //}
 
-data class Grade (val courseName: String, val letter: Char, val credits: Double)
+//data class Grade (val courseName: String, val letter: Char, val credits: Double)
+//
+//open class Person(val firstName: String, val lastName: String) {
+//    fun fullName() = "$firstName $lastName"
+//}
+//
+//class Student(firstName: String, lastName: String)
+//    : Person(firstName, lastName) {
+//    var grades: MutableList<Grade> = mutableListOf<Grade>()
+//    fun recordGrade(grade: Grade) {
+//        grades.add(grade)
+//    }
+//
+//    constructor(firstName: String, lastName: String, grades: MutableList<Grade>) {
+//        this.ff
+//    }
+//}
+fun main() {
+//    var a : Int? = null
+//    var b = a ?: 0
+//    a?.let{
+//        b = a + 1
+//    }
+//    println(b)
+//    var a = mutableListOf<String>("a", "b", "c", "d", "e")
+//    a.add(3, "abc")
+//    a.removeAt(2)
+//    print(a.joinToString() )
 
-open class Person(val firstName: String, val lastName: String) {
-    fun fullName() = "$firstName $lastName"
-}
-
-class Student(firstName: String, lastName: String)
-    : Person(firstName, lastName) {
-    var grades: MutableList<Grade> = mutableListOf<Grade>()
-    fun recordGrade(grade: Grade) {
-        grades.add(grade)
+    fun repeat (times: Int, task: ()->Unit) {
+        for (i in 0 until times){
+            task()
+        }
     }
 
-    constructor(firstName: String, lastName: String, grades: MutableList<Grade>) {
-        this.ff
-    }
+    val printA =  { println("a") }
+
+    repeat(10, printA)
 }
