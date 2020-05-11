@@ -144,5 +144,5 @@ fun main() {
 
     val printA =  { println("a") }
 
-    repeat(10, printA)
+    repeat(10) { println("a") }
 }
