@@ -92,6 +92,8 @@ object FileRepository : DropRepository {
         return dropsDirectory
     }
 
+//    private fun dropsDirectory() = getContext().getDir("drops", Context.MODE_PRIVATE)
+
     private fun dropFile(filename: String) = File(dropsDirectory(), filename)
 
     private fun dropFilename(drop: Drop) = drop.id + ".drop"
