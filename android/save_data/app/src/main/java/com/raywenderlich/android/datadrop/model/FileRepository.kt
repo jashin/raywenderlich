@@ -77,11 +77,19 @@ object FileRepository : DropRepository {
     }
 
     override fun clearDrop(drop: Drop) {
-
+        dropFile(dropFilename(drop)).delete()
     }
 
     override fun clearAllDrops() {
+        try {
+            val fileList = dropsDirectory().list()
 
+            fileList.forEach { dropFile(it).delete() }
+
+            dropsDirectory().delete()
+        } catch (e: IOException) {
+            Log.e("FileRepository", "Error clearing all drops")
+        }
     }
 
     private fun dropsDirectory(): File {
@@ -91,8 +99,6 @@ object FileRepository : DropRepository {
         }
         return dropsDirectory
     }
-
-//    private fun dropsDirectory() = getContext().getDir("drops", Context.MODE_PRIVATE)
 
     private fun dropFile(filename: String) = File(dropsDirectory(), filename)
 
