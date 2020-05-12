@@ -29,26 +29,11 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.model
+package com.raywenderlich.android.datadrop.viewmodel
+
+import com.raywenderlich.android.datadrop.model.Drop
 
 
-object InMemoryRepository : DropRepository {
-
-  private val drops = HashMap<String, Drop>()
-
-  override fun addDrop(drop: Drop) {
-    drops[drop.id] = drop
-  }
-
-  override fun getDrops(): List<Drop> {
-    return drops.values.toList()
-  }
-
-  override fun clearDrop(drop: Drop) {
-    drops.remove(drop.id)
-  }
-
-  override fun clearAllDrops() {
-    drops.clear()
-  }
+interface DropInsertListener {
+  fun dropInserted(drop: Drop)
 }

@@ -29,26 +29,25 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.ui.map
+package com.raywenderlich.android.datadrop.viewmodel
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
+import com.raywenderlich.android.datadrop.app.Injection
 import com.raywenderlich.android.datadrop.model.Drop
-import com.raywenderlich.android.datadrop.ui.base.BasePresenter
-import com.raywenderlich.android.datadrop.ui.base.BaseView
 
 
-interface MapContract {
-  interface View : BaseView<Presenter> {
-    fun showDrop(drop: Drop)
-    fun showDrops(drops: List<Drop>)
+class DropsViewModel(application: Application) : AndroidViewModel(application) {
+  private val repository = Injection.provideDropRepository()
+  private val allDrops = repository.getDrops()
+
+  fun getDrops() = allDrops
+
+  fun insert(drop: Drop, listener: DropInsertListener) = repository.addDrop(drop, listener)
+
+  fun clearAllDrops(listener: ClearAllDropsListener) {
+    repository.clearAllDrops(listener)
   }
 
-  interface Presenter : BasePresenter {
-    fun getDrops(): List<Drop>
-    fun addDrop(drop: Drop)
-    fun clearAllDrops()
-    fun saveMarkerColor(markerColor: String)
-    fun getMarkerColor(): String
-    fun saveMapType(mapType: String)
-    fun getMapType(): String
-  }
+  fun clearDrop(drop: Drop, listener: ClearDropListener) = repository.clearDrop(drop, listener)
 }

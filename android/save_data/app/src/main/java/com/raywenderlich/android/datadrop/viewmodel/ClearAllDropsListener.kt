@@ -29,21 +29,9 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.ui.droplist
-
-import com.raywenderlich.android.datadrop.model.Drop
-import com.raywenderlich.android.datadrop.ui.base.BasePresenter
-import com.raywenderlich.android.datadrop.ui.base.BaseView
+package com.raywenderlich.android.datadrop.viewmodel
 
 
-interface DropListContract {
-  interface View : BaseView<Presenter> {
-    fun showDrops(drops: List<Drop>)
-    fun removeDropAtPosition(position: Int)
-  }
-
-  interface Presenter : BasePresenter {
-    fun getDrops(): List<Drop>
-    fun deleteDropAtPosition(drop: Drop, position: Int)
-  }
+interface ClearAllDropsListener {
+  fun allDropsCleared()
 }
