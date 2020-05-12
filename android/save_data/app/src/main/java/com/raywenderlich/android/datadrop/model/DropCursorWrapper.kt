@@ -31,38 +31,20 @@
 
 package com.raywenderlich.android.datadrop.model
 
-import com.raywenderlich.android.datadrop.app.DataDropApplication
 import com.raywenderlich.android.datadrop.model.DropDbSchema.DropTable
-import android.content.ContentValues
+
+import android.database.Cursor
+import android.database.CursorWrapper
+import com.google.android.gms.maps.model.LatLng
 
 
-class SQLiteRepository : DropRepository {
+class DropCursorWrapper(cursor: Cursor) : CursorWrapper(cursor) {
+  fun getDrop(): Drop {
+    val id = getString(getColumnIndex(DropTable.Columns.ID))
+    val latitude = getDouble(getColumnIndex(DropTable.Columns.LATITUDE))
+    val longitude = getDouble(getColumnIndex(DropTable.Columns.LONGITUDE))
+    val dropMessage = getString(getColumnIndex(DropTable.Columns.DROP_MESSAGE))
 
-    private val database = DropDbHelper(DataDropApplication.getAppContext()).writableDatabase
-
-    override fun addDrop(drop: Drop) {
-        val contentValues = getDropContentValues(drop)
-        database.insert(DropTable.NAME, null, contentValues)
-    }
-
-    override fun getDrops(): List<Drop> {
-        return emptyList()
-    }
-
-    override fun clearDrop(drop: Drop) {
-
-    }
-
-    override fun clearAllDrops() {
-
-    }
-
-    private fun getDropContentValues(drop: Drop): ContentValues {
-        val contentValues = ContentValues()
-        contentValues.put(DropTable.Columns.ID, drop.id)
-        contentValues.put(DropTable.Columns.LATITUDE, drop.latLng.latitude)
-        contentValues.put(DropTable.Columns.LONGITUDE, drop.latLng.longitude)
-        contentValues.put(DropTable.Columns.DROP_MESSAGE, drop.dropMessage)
-        return contentValues
-    }
+    return Drop(LatLng(latitude, longitude), dropMessage, id)
+  }
 }
