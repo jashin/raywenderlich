@@ -41,15 +41,21 @@ class DropDbHelper(context: Context)
 
   override fun onCreate(db: SQLiteDatabase) {
     db.execSQL("create table " + DropTable.NAME + "(" +
-        "_id integer primary key autoincrement, " +
-        DropTable.Columns.ID + " text, " +
-        DropTable.Columns.LATITUDE + " real, " +
-        DropTable.Columns.LONGITUDE + " real, " +
-        DropTable.Columns.DROP_MESSAGE + " text" + ");"
+            "_id integer primary key autoincrement, " +
+            DropTable.Columns.ID + " text, " +
+            DropTable.Columns.LATITUDE + " real, " +
+            DropTable.Columns.LONGITUDE + " real, " +
+            DropTable.Columns.DROP_MESSAGE + " text, " +
+            DropTable.Columns.MARKER_COLOR + " integer" + ");"
     )
   }
 
   override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-
+    if (oldVersion < 2) {
+      db.execSQL("alter table " +
+              DropTable.NAME + " add column " +
+              DropTable.Columns.MARKER_COLOR + " integer;"
+      )
+    }
   }
 }
