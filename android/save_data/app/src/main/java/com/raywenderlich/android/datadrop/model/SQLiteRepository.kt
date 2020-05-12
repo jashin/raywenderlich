@@ -29,23 +29,28 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import com.raywenderlich.android.datadrop.model.*
-import com.raywenderlich.android.datadrop.ui.droplist.DropListContract
-import com.raywenderlich.android.datadrop.ui.droplist.DropListPresenter
-import com.raywenderlich.android.datadrop.ui.map.MapContract
-import com.raywenderlich.android.datadrop.ui.map.MapPresenter
+import com.raywenderlich.android.datadrop.app.DataDropApplication
 
-object Injection {
 
-  private fun provideDropRepository(): DropRepository = SQLiteRepository()
+class SQLiteRepository : DropRepository {
 
-  fun provideMapPresenter(view: MapContract.View): MapContract.Presenter {
-    return MapPresenter(provideDropRepository(), view)
+  private val database = DropDbHelper(DataDropApplication.getAppContext()).writableDatabase
+
+  override fun addDrop(drop: Drop) {
+
   }
 
-  fun provideDropListPresenter(view: DropListContract.View): DropListContract.Presenter {
-    return DropListPresenter(provideDropRepository(), view)
+  override fun getDrops(): List<Drop> {
+    return emptyList()
+  }
+
+  override fun clearDrop(drop: Drop) {
+
+  }
+
+  override fun clearAllDrops() {
+
   }
 }

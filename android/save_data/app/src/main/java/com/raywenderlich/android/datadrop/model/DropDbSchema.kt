@@ -29,23 +29,21 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import com.raywenderlich.android.datadrop.model.*
-import com.raywenderlich.android.datadrop.ui.droplist.DropListContract
-import com.raywenderlich.android.datadrop.ui.droplist.DropListPresenter
-import com.raywenderlich.android.datadrop.ui.map.MapContract
-import com.raywenderlich.android.datadrop.ui.map.MapPresenter
 
-object Injection {
+object DropDbSchema {
+  const val VERSION = 1
+  const val DB_NAME = "drops.db"
 
-  private fun provideDropRepository(): DropRepository = SQLiteRepository()
+  object DropTable {
+    const val NAME = "drops"
 
-  fun provideMapPresenter(view: MapContract.View): MapContract.Presenter {
-    return MapPresenter(provideDropRepository(), view)
-  }
-
-  fun provideDropListPresenter(view: DropListContract.View): DropListContract.Presenter {
-    return DropListPresenter(provideDropRepository(), view)
+    object Columns {
+      const val ID = "id"
+      const val LATITUDE = "latitude"
+      const val LONGITUDE = "longitude"
+      const val DROP_MESSAGE = "dropMessage"
+    }
   }
 }

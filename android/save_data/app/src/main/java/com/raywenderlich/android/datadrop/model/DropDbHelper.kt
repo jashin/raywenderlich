@@ -29,23 +29,27 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import com.raywenderlich.android.datadrop.model.*
-import com.raywenderlich.android.datadrop.ui.droplist.DropListContract
-import com.raywenderlich.android.datadrop.ui.droplist.DropListPresenter
-import com.raywenderlich.android.datadrop.ui.map.MapContract
-import com.raywenderlich.android.datadrop.ui.map.MapPresenter
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import com.raywenderlich.android.datadrop.model.DropDbSchema.DropTable
 
-object Injection {
+class DropDbHelper(context: Context)
+  : SQLiteOpenHelper(context, DropDbSchema.DB_NAME, null, DropDbSchema.VERSION) {
 
-  private fun provideDropRepository(): DropRepository = SQLiteRepository()
-
-  fun provideMapPresenter(view: MapContract.View): MapContract.Presenter {
-    return MapPresenter(provideDropRepository(), view)
+  override fun onCreate(db: SQLiteDatabase) {
+    db.execSQL("create table " + DropTable.NAME + "(" +
+        "_id integer primary key autoincrement, " +
+        DropTable.Columns.ID + " text, " +
+        DropTable.Columns.LATITUDE + " real, " +
+        DropTable.Columns.LONGITUDE + " real, " +
+        DropTable.Columns.DROP_MESSAGE + " text" + ");"
+    )
   }
 
-  fun provideDropListPresenter(view: DropListContract.View): DropListContract.Presenter {
-    return DropListPresenter(provideDropRepository(), view)
+  override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+
   }
 }
