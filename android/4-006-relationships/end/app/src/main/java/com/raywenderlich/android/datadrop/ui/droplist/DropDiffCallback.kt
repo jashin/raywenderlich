@@ -29,28 +29,31 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.ui.droplist
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.support.v7.util.DiffUtil
+import com.raywenderlich.android.datadrop.model.Drop
 
 
-class DataDropApplication : Application() {
+class DropDiffCallback(private val oldDrops: List<Drop>,
+                       private val newDrops: List<Drop>) : DiffUtil.Callback() {
 
-  companion object {
-    lateinit var database: DropDatabase
-
-    private lateinit var instance: DataDropApplication
-
-    fun getAppContext(): Context = instance.applicationContext
+  override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    return oldDrops[oldItemPosition].id == newDrops[newItemPosition].id
   }
 
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
+  override fun getOldListSize() = oldDrops.size
 
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
+
+  override fun getNewListSize() = newDrops.size
+
+
+  override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    val oldDrop = oldDrops[oldItemPosition]
+    val newDrop = newDrops[newItemPosition]
+
+    return oldDrop.dropMessage == newDrop.dropMessage &&
+        oldDrop.latLng == newDrop.latLng &&
+        oldDrop.markerColor == newDrop.markerColor
   }
 }

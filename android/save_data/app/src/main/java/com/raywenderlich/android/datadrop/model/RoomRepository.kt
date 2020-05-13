@@ -29,28 +29,49 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.arch.lifecycle.LiveData
+import android.os.AsyncTask
+import com.raywenderlich.android.datadrop.app.DataDropApplication
 
 
-class DataDropApplication : Application() {
+class RoomRepository : DropRepository {
+  private val dropDao: DropDao = DataDropApplication.database.dropDao()
+  private val allDrops: LiveData<List<Drop>>
 
-  companion object {
-    lateinit var database: DropDatabase
-
-    private lateinit var instance: DataDropApplication
-
-    fun getAppContext(): Context = instance.applicationContext
+  init {
+    allDrops = dropDao.getAllDrops()
   }
 
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
+  override fun addDrop(drop: Drop) {
+    InsertAsyncTask(dropDao).execute(drop)
+  }
 
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
+  override fun getDrops() = allDrops
+
+  override fun clearDrop(drop: Drop) {
+      DeleteAsyncTask(dropDao).execute(drop)
+  }
+
+  override fun clearAllDrops() {
+    val dropArray = allDrops.value?.toTypedArray()
+    if(dropArray != null)
+      DeleteAsyncTask(dropDao).execute(*dropArray)
+  }
+
+  private class InsertAsyncTask internal constructor(private val dao: DropDao) : AsyncTask<Drop, Void, Void>() {
+    override fun doInBackground(vararg params: Drop): Void? {
+      dao.insert(params[0])
+      return null
+    }
+  }
+
+  private class DeleteAsyncTask internal constructor(private val dao: DropDao) : AsyncTask<Drop, Void, Void>() {
+    override fun doInBackground(vararg params: Drop): Void? {
+      dao.clearDrops(*params)
+      return null
+    }
+
   }
 }

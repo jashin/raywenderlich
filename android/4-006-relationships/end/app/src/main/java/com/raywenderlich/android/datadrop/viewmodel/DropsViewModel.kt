@@ -29,28 +29,23 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.viewmodel
 
 import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.arch.lifecycle.AndroidViewModel
+import com.raywenderlich.android.datadrop.app.Injection
+import com.raywenderlich.android.datadrop.model.Drop
 
 
-class DataDropApplication : Application() {
+class DropsViewModel(application: Application) : AndroidViewModel(application) {
+  private val repository = Injection.provideDropRepository()
+  private val allDrops = repository.getDrops()
 
-  companion object {
-    lateinit var database: DropDatabase
+  fun getDrops() = allDrops
 
-    private lateinit var instance: DataDropApplication
+  fun insert(drop: Drop) = repository.addDrop(drop)
 
-    fun getAppContext(): Context = instance.applicationContext
-  }
+  fun clearAllDrops() = repository.clearAllDrops()
 
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
-
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
-  }
+  fun clearDrop(drop: Drop) = repository.clearDrop(drop)
 }

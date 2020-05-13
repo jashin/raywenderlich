@@ -29,28 +29,16 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.arch.persistence.room.Database
+import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 
 
-class DataDropApplication : Application() {
+@Database(entities = [(Drop::class)], version = 1)
+@TypeConverters(LatLngConverter::class)
+abstract class DropDatabase : RoomDatabase() {
 
-  companion object {
-    lateinit var database: DropDatabase
-
-    private lateinit var instance: DataDropApplication
-
-    fun getAppContext(): Context = instance.applicationContext
-  }
-
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
-
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
-  }
+  abstract fun dropDao(): DropDao
 }

@@ -29,28 +29,30 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.preference.PreferenceManager
+import com.raywenderlich.android.datadrop.app.DataDropApplication
 
 
-class DataDropApplication : Application() {
+object MapPrefs {
 
-  companion object {
-    lateinit var database: DropDatabase
+  private const val KEY_MARKER_COLOR = "KEY_MARKER_COLOR"
 
-    private lateinit var instance: DataDropApplication
+  private const val KEY_MAP_TYPE = "KEY_MAP_TYPE"
 
-    fun getAppContext(): Context = instance.applicationContext
+  private fun sharedPrefs() = PreferenceManager.getDefaultSharedPreferences(DataDropApplication.getAppContext())
+
+  fun saveMarkerColor(markerColor: String) {
+    val editor = sharedPrefs().edit()
+    editor.putString(KEY_MARKER_COLOR, markerColor).apply()
   }
 
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
+  fun getMarkerColor(): String = sharedPrefs().getString(KEY_MARKER_COLOR, MarkerColor.RED_COLOR)
 
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
+  fun saveMapType(mapType: String) {
+    sharedPrefs().edit().putString(KEY_MAP_TYPE, mapType).apply()
   }
+
+  fun getMapType(): String = sharedPrefs().getString(KEY_MAP_TYPE, "Normal")
 }

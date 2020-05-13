@@ -29,22 +29,16 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.model
+package com.raywenderlich.android.datadrop.viewmodel
+
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
+import com.raywenderlich.android.datadrop.app.DataDropApplication
 
 
-object DropDbSchema {
-  const val VERSION = 2
-  const val DB_NAME = "drops.db"
+class MarkerColorViewModel(application: Application) : AndroidViewModel(application) {
+  private val markerColorDao = DataDropApplication.database.markerColorDao()
+  private val allMarkerColors = markerColorDao.getAllMarkerColors()
 
-  object DropTable {
-    const val NAME = "drops"
-
-    object Columns {
-      const val ID = "id"
-      const val LATITUDE = "latitude"
-      const val LONGITUDE = "longitude"
-      const val DROP_MESSAGE = "dropMessage"
-      const val MARKER_COLOR = "markerColor"
-    }
-  }
+  fun getMarkerColors() = allMarkerColors
 }

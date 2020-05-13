@@ -54,8 +54,6 @@ import com.raywenderlich.android.datadrop.R
 import com.raywenderlich.android.datadrop.model.Drop
 import com.raywenderlich.android.datadrop.model.MapPrefs
 import com.raywenderlich.android.datadrop.ui.droplist.DropListActivity
-import com.raywenderlich.android.datadrop.viewmodel.ClearAllDropsListener
-import com.raywenderlich.android.datadrop.viewmodel.DropInsertListener
 import com.raywenderlich.android.datadrop.viewmodel.DropsViewModel
 
 
@@ -263,19 +261,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addDrop(latLng: LatLng, message: String, markerColor: Int) {
-        dropsViewModel.insert(Drop(latLng, message, markerColor = markerColor),
-                object : DropInsertListener {
-                    override fun dropInserted(drop: Drop) {
-                        showDrop(drop)
-                    }
-                })
+        dropsViewModel.insert(Drop(latLng, message, markerColor = markerColor))
     }
 
     private fun clearAllDrops() {
-        dropsViewModel.clearAllDrops(object : ClearAllDropsListener {
-            override fun allDropsCleared() {
-                map.clear()
-            }
-        })
+        dropsViewModel.clearAllDrops()
     }
 }

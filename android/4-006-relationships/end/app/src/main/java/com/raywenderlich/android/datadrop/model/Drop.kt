@@ -29,28 +29,21 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.ForeignKey
+import android.arch.persistence.room.ForeignKey.CASCADE
+import android.arch.persistence.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
+import java.util.*
 
-
-class DataDropApplication : Application() {
-
-  companion object {
-    lateinit var database: DropDatabase
-
-    private lateinit var instance: DataDropApplication
-
-    fun getAppContext(): Context = instance.applicationContext
-  }
-
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
-
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
-  }
+@Entity(tableName = "drop_table",
+    foreignKeys = [(ForeignKey(entity = MarkerColor::class,
+        parentColumns = ["displayString"],
+        childColumns = ["markerColor"],
+        onDelete = CASCADE))])
+data class Drop(val latLng: LatLng, val dropMessage: String, @PrimaryKey val id: String = UUID.randomUUID().toString(),
+                val markerColor: String = MarkerColor.RED_COLOR) {
+  fun latLngString() = "%.6f, %.6f".format(latLng.latitude, latLng.longitude)
 }

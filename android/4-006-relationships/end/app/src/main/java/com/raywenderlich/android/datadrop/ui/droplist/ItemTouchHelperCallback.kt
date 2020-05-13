@@ -29,28 +29,27 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.ui.droplist
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 
 
-class DataDropApplication : Application() {
+class ItemTouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemTouchHelper.Callback() {
 
-  companion object {
-    lateinit var database: DropDatabase
+  override fun isLongPressDragEnabled() = false
 
-    private lateinit var instance: DataDropApplication
+  override fun isItemViewSwipeEnabled() = true
 
-    fun getAppContext(): Context = instance.applicationContext
+  override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    return makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
   }
 
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
+  override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+    return false
+  }
 
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
+  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+    listener.onItemDismiss(viewHolder, viewHolder.adapterPosition)
   }
 }

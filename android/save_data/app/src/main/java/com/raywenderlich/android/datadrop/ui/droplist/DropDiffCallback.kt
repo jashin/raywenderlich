@@ -29,33 +29,31 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.model
+package com.raywenderlich.android.datadrop.ui.droplist
 
-import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import com.raywenderlich.android.datadrop.model.DropDbSchema.DropTable
+import android.support.v7.util.DiffUtil
+import com.raywenderlich.android.datadrop.model.Drop
 
-class DropDbHelper(context: Context)
-  : SQLiteOpenHelper(context, DropDbSchema.DB_NAME, null, DropDbSchema.VERSION) {
 
-  override fun onCreate(db: SQLiteDatabase) {
-    db.execSQL("create table " + DropTable.NAME + "(" +
-            "_id integer primary key autoincrement, " +
-            DropTable.Columns.ID + " text, " +
-            DropTable.Columns.LATITUDE + " real, " +
-            DropTable.Columns.LONGITUDE + " real, " +
-            DropTable.Columns.DROP_MESSAGE + " text, " +
-            DropTable.Columns.MARKER_COLOR + " integer" + ");"
-    )
+class DropDiffCallback(private val oldDrops: List<Drop>,
+                       private val newDrops: List<Drop>) : DiffUtil.Callback() {
+
+  override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    return oldDrops[oldItemPosition].id == newDrops[newItemPosition].id
   }
 
-  override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-    if (oldVersion < 2) {
-      db.execSQL("alter table " +
-              DropTable.NAME + " add column " +
-              DropTable.Columns.MARKER_COLOR + " integer;"
-      )
-    }
+  override fun getOldListSize() = oldDrops.size
+
+
+  override fun getNewListSize() = newDrops.size
+
+
+  override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    val oldDrop = oldDrops[oldItemPosition]
+    val newDrop = newDrops[newItemPosition]
+
+    return oldDrop.dropMessage == newDrop.dropMessage &&
+        oldDrop.latLng == newDrop.latLng &&
+        oldDrop.markerColor == newDrop.markerColor
   }
 }

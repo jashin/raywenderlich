@@ -29,22 +29,14 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.model
+package com.raywenderlich.android.datadrop.app
 
-import com.raywenderlich.android.datadrop.model.DropDbSchema.DropTable
+import android.support.annotation.LayoutRes
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 
-import android.database.Cursor
-import android.database.CursorWrapper
-import com.google.android.gms.maps.model.LatLng
 
-
-class DropCursorWrapper(cursor: Cursor) : CursorWrapper(cursor) {
-  fun getDrop(): Drop {
-    val id = getString(getColumnIndex(DropTable.Columns.ID))
-    val latitude = getDouble(getColumnIndex(DropTable.Columns.LATITUDE))
-    val longitude = getDouble(getColumnIndex(DropTable.Columns.LONGITUDE))
-    val dropMessage = getString(getColumnIndex(DropTable.Columns.DROP_MESSAGE))
-
-    return Drop(LatLng(latitude, longitude), dropMessage, id)
-  }
+fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
+  return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }

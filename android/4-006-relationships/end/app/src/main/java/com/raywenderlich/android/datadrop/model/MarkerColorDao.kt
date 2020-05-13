@@ -29,28 +29,24 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.model
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import android.arch.lifecycle.LiveData
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
 
 
-class DataDropApplication : Application() {
+@Dao
+interface MarkerColorDao {
 
-  companion object {
-    lateinit var database: DropDatabase
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  fun insert(markerColor: MarkerColor)
 
-    private lateinit var instance: DataDropApplication
+  @Query("DELETE FROM marker_color_table")
+  fun deleteAll()
 
-    fun getAppContext(): Context = instance.applicationContext
-  }
-
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
-
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
-  }
+  @Query("SELECT * FROM marker_color_table ORDER BY displayString ASC")
+  fun getAllMarkerColors(): LiveData<List<MarkerColor>>
 }

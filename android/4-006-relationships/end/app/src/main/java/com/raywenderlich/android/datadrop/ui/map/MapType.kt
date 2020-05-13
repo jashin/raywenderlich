@@ -29,28 +29,27 @@
  *
  */
 
-package com.raywenderlich.android.datadrop.app
+package com.raywenderlich.android.datadrop.ui.map
 
-import android.app.Application
-import android.arch.persistence.room.Room
-import android.content.Context
-import com.raywenderlich.android.datadrop.model.DropDatabase
+import com.google.android.gms.maps.GoogleMap
 
 
-class DataDropApplication : Application() {
+enum class MapType(val displayString: String) {
+  NORMAL("Normal"), SATELLITE("Satellite"), HYBRID("Hybrid");
+
+  fun getGoogleMapType() =
+      when (this) {
+        MapType.SATELLITE -> GoogleMap.MAP_TYPE_SATELLITE
+        MapType.HYBRID -> GoogleMap.MAP_TYPE_HYBRID
+        else -> GoogleMap.MAP_TYPE_NORMAL
+      }
 
   companion object {
-    lateinit var database: DropDatabase
-
-    private lateinit var instance: DataDropApplication
-
-    fun getAppContext(): Context = instance.applicationContext
-  }
-
-  override fun onCreate() {
-    instance = this
-    super.onCreate()
-
-    database = Room.databaseBuilder(this, DropDatabase::class.java, "drop_database").build()
+    fun createMapType(displayString: String) =
+        when (displayString) {
+          "Satellite" -> SATELLITE
+          "Hybrid" -> HYBRID
+          else -> NORMAL
+        }
   }
 }
