@@ -36,10 +36,11 @@ package com.raywenderlich.android.kotlincoroutinesfundamentals
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -55,11 +56,11 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    val mainLooper = mainLooper
-
     // Your code
-    Thread(Runnable {
-      val imageUrl = URL("https://en.wikipedia.org/wiki/Image#/media/File:Image_created_with_a_mobile_phone.png")
+    Log.d("TaskThread:", Thread.currentThread().name)
+    GlobalScope.launch {
+      Log.d("TaskThread:", Thread.currentThread().name)
+      val imageUrl = URL("https://wallpaperplay.com/walls/full/1/c/7/38027.jpg")
       val connection = imageUrl.openConnection() as HttpURLConnection
       connection.doInput = true
       connection.connect()
@@ -67,9 +68,10 @@ class MainActivity : AppCompatActivity() {
       val inputStream = connection.inputStream
       val bitmap = BitmapFactory.decodeStream(inputStream)
 
-//      Handler(Looper.getMainLooper()).post { image.setImageBitmap(bitmap) }
-        Handler(mainLooper).post { image.setImageBitmap(bitmap)}
-//        runOnUiThread{  image.setImageBitmap(bitmap)}
-    }).start()
+      runOnUiThread {
+        Log.d("TaskThread:", Thread.currentThread().name)
+        image.setImageBitmap(bitmap)
+      }
+    }
   }
 }
