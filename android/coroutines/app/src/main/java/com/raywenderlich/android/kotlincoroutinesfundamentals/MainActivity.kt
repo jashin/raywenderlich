@@ -39,6 +39,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     // Your code
     Log.d("TaskThread:", Thread.currentThread().name)
-    GlobalScope.launch {
+    GlobalScope.launch(context = Dispatchers.IO) {
       Log.d("TaskThread:", Thread.currentThread().name)
       val imageUrl = URL("https://wallpaperplay.com/walls/full/1/c/7/38027.jpg")
       val connection = imageUrl.openConnection() as HttpURLConnection
@@ -68,7 +69,9 @@ class MainActivity : AppCompatActivity() {
       val inputStream = connection.inputStream
       val bitmap = BitmapFactory.decodeStream(inputStream)
 
-      runOnUiThread {
+      Log.d("TaskThread:", Thread.currentThread().name)
+
+      launch(Dispatchers.Main) {
         Log.d("TaskThread:", Thread.currentThread().name)
         image.setImageBitmap(bitmap)
       }
