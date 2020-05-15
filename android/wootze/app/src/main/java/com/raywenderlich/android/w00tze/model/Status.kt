@@ -29,12 +29,10 @@
  *
  */
 
-package com.raywenderlich.android.w00tze.app
+package com.raywenderlich.android.w00tze.model
 
 
-object Constants {
-
-  private const val BASE_URL = "https://api.github.com"
-
-  fun fullUrlString(path: String) = "$BASE_URL$path"
+enum class Status {
+  SUCCESS,
+  ERROR
 }

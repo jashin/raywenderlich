@@ -29,17 +29,11 @@
  *
  */
 
-package com.raywenderlich.android.w00tze.repository
+package com.raywenderlich.android.w00tze.model
 
-import android.arch.lifecycle.LiveData
-import com.raywenderlich.android.w00tze.model.Either
-import com.raywenderlich.android.w00tze.model.Gist
-import com.raywenderlich.android.w00tze.model.Repo
-import com.raywenderlich.android.w00tze.model.User
 
-interface Repository {
-  fun getRepos(): LiveData<Either<List<Repo>>>
-  fun getGists(): LiveData<Either<List<Gist>>>
-  fun getUser(): LiveData<Either<User>>
+enum class ApiError {
+  REPOS,
+  GISTS,
+  USER
 }
-
