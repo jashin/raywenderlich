@@ -42,7 +42,7 @@ import retrofit2.Response
 
 object RemoteRepository : Repository {
 
-  private const val LOGIN = "w00tze"
+  private val LOGIN = AuthenticationPrefs.getUsername()
 
   private val api = Injection.provideGitHubApi()
 
@@ -53,10 +53,11 @@ object RemoteRepository : Repository {
       override fun onResponse(call: Call<List<Repo>>?, response: Response<List<Repo>>?) {
         if (response != null && response.isSuccessful) {
           liveData.value = Either.success(response.body())
-        }else{
+        } else {
           liveData.value = Either.error(ApiError.REPOS, null)
         }
       }
+
       override fun onFailure(call: Call<List<Repo>>?, t: Throwable?) {
         liveData.value = Either.error(ApiError.REPOS, null)
       }
@@ -96,8 +97,29 @@ object RemoteRepository : Repository {
           liveData.value = Either.error(ApiError.USER, null)
         }
       }
+
       override fun onFailure(call: Call<User>?, t: Throwable?) {
         liveData.value = Either.error(ApiError.USER, null)
+      }
+    })
+
+    return liveData
+  }
+
+  override fun postGist(request: GistRequest): LiveData<Either<Gist>> {
+    val liveData = MutableLiveData<Either<Gist>>()
+
+    api.postGist(request).enqueue(object : Callback<Gist> {
+      override fun onResponse(call: Call<Gist>?, response: Response<Gist>?) {
+        if (response != null && response.isSuccessful) {
+          liveData.value = Either.success(response.body())
+        } else {
+          liveData.value = Either.error(ApiError.POST_GIST, null)
+        }
+      }
+
+      override fun onFailure(call: Call<Gist>?, t: Throwable?) {
+        liveData.value = Either.error(ApiError.POST_GIST, null)
       }
     })
 

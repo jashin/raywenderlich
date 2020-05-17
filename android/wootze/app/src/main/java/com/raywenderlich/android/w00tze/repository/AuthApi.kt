@@ -31,27 +31,19 @@
 
 package com.raywenderlich.android.w00tze.repository
 
-import com.raywenderlich.android.w00tze.model.Gist
-import com.raywenderlich.android.w00tze.model.GistRequest
-import com.raywenderlich.android.w00tze.model.Repo
-import com.raywenderlich.android.w00tze.model.User
+import com.raywenderlich.android.w00tze.model.AccessToken
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 
-interface GitHubApi {
-  @GET("users/{user}/repos")
-  fun getRepos(@Path("user") user: String): Call<List<Repo>>
-
-  @GET("users/{user}/gists")
-  fun getGists(@Path("user") user: String): Call<List<Gist>>
-
-  @GET("users/{user}")
-  fun getUser(@Path("user") user: String): Call<User>
-
-  @POST("gists")
-  fun postGist(@Body body: GistRequest): Call<Gist>
+interface AuthApi {
+  @Headers("Accept: application/json")
+  @POST("login/oauth/access_token")
+  @FormUrlEncoded
+  fun getAccessToken(@Field("client_id") clientId: String,
+                     @Field("client_secret") clientSecret: String,
+                     @Field("code") accessCode: String): Call<AccessToken>
 }

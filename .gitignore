@@ -90,3 +90,4 @@ lint/tmp/
 # idea
 .idea/*
 .idea
+android/wootze/app/build.gradle
