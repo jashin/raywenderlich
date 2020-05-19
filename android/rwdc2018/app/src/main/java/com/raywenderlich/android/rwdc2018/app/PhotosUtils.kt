@@ -51,7 +51,7 @@ object PhotosUtils {
   private fun getUrlAsString(urlAddress: String): String {
     val url = URL(urlAddress)
 
-    val conn = url.openConnection() as HttpsURLConnection
+    val conn = url.openConnection() as HttpURLConnection
 
     conn.requestMethod = "GET"
     conn.setRequestProperty("Accept", "application/json")

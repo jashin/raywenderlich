@@ -33,7 +33,7 @@ package com.raywenderlich.android.rwdc2018.app
 
 
 object Constants {
-  const val PHOTOS_URL = "https://api.myjson.com/bins/seroe"
+  const val PHOTOS_URL = "http://192.168.4.27:8080/bins/seroe/photos.json"
   const val SONG_URL = "https://koenig-media.raywenderlich.com/uploads/2018/05/song.mp3"
   const val SONGS_DIRECTORY = "songs"
   const val SONG_FILENAME = "song.mp3"
