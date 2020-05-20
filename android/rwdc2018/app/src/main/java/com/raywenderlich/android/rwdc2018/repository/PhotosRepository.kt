@@ -39,19 +39,28 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.*
 import android.util.Log
+import androidx.work.*
 import com.raywenderlich.android.rwdc2018.app.PhotosUtils
 import com.raywenderlich.android.rwdc2018.app.RWDC2018Application
+import com.raywenderlich.android.rwdc2018.service.DownloadWorker
 import com.raywenderlich.android.rwdc2018.service.LogJobService
 import com.raywenderlich.android.rwdc2018.service.PhotosJobService
+import java.util.concurrent.TimeUnit
 
 
 class PhotosRepository : Repository {
   private val photosLiveData = MutableLiveData<List<String>>()
   private val bannerLiveData = MutableLiveData<String>()
 
+
+  companion object {
+    const val DOWNLOAD_WORK_TAG = "DOWNLOAD_WORK_TAG"
+  }
+
   init {
-    scheduleFetchJob()
-    scheduleLogJob()
+//    scheduleFetchJob()
+//    scheduleLogJob()
+    schedulePeriodicWorkRequest()
   }
   override fun getPhotos(): LiveData<List<String>> {
 //    fetchJsonData()
@@ -75,25 +84,42 @@ class PhotosRepository : Repository {
     return bannerLiveData
   }
 
-  private fun scheduleFetchJob() {
-    val jobScheduler = RWDC2018Application.getAppContext().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-    val jobInfo = JobInfo.Builder(1000,
-            ComponentName(RWDC2018Application.getAppContext(), PhotosJobService::class.java))
-            .setPeriodic(900000)
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+  private fun schedulePeriodicWorkRequest() {
+    val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresStorageNotLow(true)
             .build()
-    jobScheduler.schedule(jobInfo)
+
+    val workManager = WorkManager.getInstance()
+
+    val request: WorkRequest = PeriodicWorkRequestBuilder<DownloadWorker>(15, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .addTag(DOWNLOAD_WORK_TAG)
+            .build()
+
+    workManager.cancelAllWorkByTag(DOWNLOAD_WORK_TAG) // to cancel any previous scheduled task
+    workManager.enqueue(request) // then start a new task
   }
 
-
-  private fun scheduleLogJob() {
-    val jobScheduler = RWDC2018Application.getAppContext().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-    val jobInfo = JobInfo.Builder(1001,
-            ComponentName(RWDC2018Application.getAppContext(), LogJobService::class.java))
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-            .build()
-    jobScheduler.schedule(jobInfo)
-  }
+//  private fun scheduleFetchJob() {
+//    val jobScheduler = RWDC2018Application.getAppContext().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+//    val jobInfo = JobInfo.Builder(1000,
+//            ComponentName(RWDC2018Application.getAppContext(), PhotosJobService::class.java))
+//            .setPeriodic(900000)
+//            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//            .build()
+//    jobScheduler.schedule(jobInfo)
+//  }
+//
+//
+//  private fun scheduleLogJob() {
+//    val jobScheduler = RWDC2018Application.getAppContext().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+//    val jobInfo = JobInfo.Builder(1001,
+//            ComponentName(RWDC2018Application.getAppContext(), LogJobService::class.java))
+//            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//            .build()
+//    jobScheduler.schedule(jobInfo)
+//  }
   private fun fetchJsonData() {
 //    val handler = object : Handler(Looper.getMainLooper()){
 //      override fun handleMessage(msg: Message?) {
