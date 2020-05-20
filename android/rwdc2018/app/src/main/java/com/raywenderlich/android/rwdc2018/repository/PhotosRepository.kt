@@ -31,17 +31,28 @@
 
 package com.raywenderlich.android.rwdc2018.repository
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.content.ComponentName
+import android.content.Context
 import android.os.*
 import android.util.Log
 import com.raywenderlich.android.rwdc2018.app.PhotosUtils
+import com.raywenderlich.android.rwdc2018.app.RWDC2018Application
+import com.raywenderlich.android.rwdc2018.service.LogJobService
+import com.raywenderlich.android.rwdc2018.service.PhotosJobService
 
 
 class PhotosRepository : Repository {
   private val photosLiveData = MutableLiveData<List<String>>()
   private val bannerLiveData = MutableLiveData<String>()
 
+  init {
+    scheduleFetchJob()
+    scheduleLogJob()
+  }
   override fun getPhotos(): LiveData<List<String>> {
 //    fetchJsonData()
     FetchPhotosAsyncTask({ photos ->
@@ -64,6 +75,25 @@ class PhotosRepository : Repository {
     return bannerLiveData
   }
 
+  private fun scheduleFetchJob() {
+    val jobScheduler = RWDC2018Application.getAppContext().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+    val jobInfo = JobInfo.Builder(1000,
+            ComponentName(RWDC2018Application.getAppContext(), PhotosJobService::class.java))
+            .setPeriodic(900000)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .build()
+    jobScheduler.schedule(jobInfo)
+  }
+
+
+  private fun scheduleLogJob() {
+    val jobScheduler = RWDC2018Application.getAppContext().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+    val jobInfo = JobInfo.Builder(1001,
+            ComponentName(RWDC2018Application.getAppContext(), LogJobService::class.java))
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .build()
+    jobScheduler.schedule(jobInfo)
+  }
   private fun fetchJsonData() {
 //    val handler = object : Handler(Looper.getMainLooper()){
 //      override fun handleMessage(msg: Message?) {
